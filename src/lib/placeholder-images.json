@@ -1,0 +1,10 @@
+{
+  "placeholderImages": [
+    {
+      "id": "stream-viz-header",
+      "description": "Abstract visualization of data streams",
+      "imageUrl": "https://picsum.photos/seed/streamviz/1200/300",
+      "imageHint": "data stream"
+    }
+  ]
+}
