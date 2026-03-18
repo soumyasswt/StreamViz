@@ -1,0 +1,440 @@
+/* ============================================================================
+   StreamViz — Design System & Stylesheet
+   Replaces Tailwind CSS + Radix UI.
+   Matches the original color theme, spacing scale, and component design.
+   ============================================================================ */
+
+/* --------------------------------------------------------------------------
+   RESET & BASE
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* --- Color palette (mirrors globals.css HSL variables) --- */
+  --background: #ffffff;
+  --foreground: #1a1a2e;
+  --card: #fafafa;
+  --card-foreground: #1a1a2e;
+  --primary: hsl(221, 83%, 53%);
+  --primary-hover: hsl(221, 83%, 46%);
+  --primary-foreground: #f1f5f9;
+  --secondary: #f8fafc;
+  --muted: #f0f2f5;
+  --muted-foreground: #737888;
+  --accent: #f1f5f9;
+  --destructive: #ef4444;
+  --border: #e2e4ea;
+  --input-border: #e2e4ea;
+  --ring: hsl(221, 83%, 53%);
+
+  /* --- Spacing (8px grid) --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* --- Radii --- */
+  --radius: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* --- Shadows --- */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* --- Typography --- */
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', monospace;
+
+  /* --- Metrics gradient --- */
+  --metrics-from: #eff6ff;
+  --metrics-to: #eef2ff;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--background);
+  color: var(--foreground);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* --------------------------------------------------------------------------
+   CONTAINER
+   -------------------------------------------------------------------------- */
+.container {
+  max-width: 72rem;            /* max-w-6xl = 72rem */
+  margin: 0 auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* --------------------------------------------------------------------------
+   CARD
+   -------------------------------------------------------------------------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: var(--space-6) var(--space-6) 0;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--card-foreground);
+  margin-bottom: var(--space-1);
+}
+
+.card-description {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin-bottom: 0;
+}
+
+.card-content {
+  padding: var(--space-6);
+}
+
+/* --------------------------------------------------------------------------
+   TABS
+   -------------------------------------------------------------------------- */
+.tabs-root {
+  width: 100%;
+}
+
+.tabs-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-1);
+  background: var(--muted);
+  border-radius: var(--radius);
+  padding: var(--space-1);
+}
+
+.tabs-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  background: transparent;
+  border: none;
+  border-radius: calc(var(--radius) - 2px);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.tabs-trigger:hover {
+  color: var(--foreground);
+}
+
+.tabs-trigger.active {
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: var(--shadow-sm);
+}
+
+.tabs-trigger:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.tabs-content {
+  display: none;
+  padding-top: var(--space-4);
+}
+
+.tabs-content.active {
+  display: block;
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --------------------------------------------------------------------------
+   SELECT (custom styled <select>)
+   -------------------------------------------------------------------------- */
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select-trigger {
+  display: flex;
+  width: 100%;
+  height: 2.5rem;
+  align-items: center;
+  padding: 0 2.5rem 0 var(--space-3);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--foreground);
+  background: var(--background);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.select-trigger:hover {
+  border-color: var(--primary);
+}
+
+.select-trigger:focus {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: 0 0 0 2px hsl(221 83% 53% / 0.2);
+}
+
+.select-chevron {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--muted-foreground);
+  display: flex;
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------
+   INPUT
+   -------------------------------------------------------------------------- */
+.input {
+  display: flex;
+  width: 100%;
+  height: 2.5rem;
+  padding: 0 var(--space-3);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--foreground);
+  background: var(--background);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input::placeholder {
+  color: var(--muted-foreground);
+}
+
+.input:hover {
+  border-color: var(--primary);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: 0 0 0 2px hsl(221 83% 53% / 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   PLAY AREA
+   -------------------------------------------------------------------------- */
+.play-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+/* --------------------------------------------------------------------------
+   PLAY BUTTON
+   -------------------------------------------------------------------------- */
+.play-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-3) var(--space-6);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  background: var(--primary);
+  border: none;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+}
+
+.play-button:hover {
+  background: var(--primary-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+.play-button:active {
+  transform: scale(0.985);
+}
+
+.play-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.play-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px white, 0 0 0 4px var(--ring);
+}
+
+.play-button-icon {
+  font-size: 1.1rem;
+}
+
+/* --------------------------------------------------------------------------
+   VIDEO PLAYER
+   -------------------------------------------------------------------------- */
+.video-player {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  outline: 2px solid hsl(0 0% 80% / 0.5);
+  outline-offset: -1px;
+  background: #000;
+  display: block;
+}
+
+.video-player:focus {
+  outline-color: var(--ring);
+}
+
+/* --------------------------------------------------------------------------
+   METRICS CARD
+   -------------------------------------------------------------------------- */
+.metrics-card {
+  background: linear-gradient(135deg, var(--metrics-from), var(--metrics-to));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.metrics-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--foreground);
+}
+
+.metrics-icon {
+  font-size: 1.1rem;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  font-size: 0.875rem;
+}
+
+@media (min-width: 1024px) {
+  .metrics-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.metric-label {
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.metric-value {
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--foreground);
+  letter-spacing: -0.015em;
+}
+
+.metric-blue {
+  color: var(--primary);
+}
+
+.metric-green {
+  color: #16a34a;
+}
+
+/* --------------------------------------------------------------------------
+   LOADING STATE
+   -------------------------------------------------------------------------- */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.loading .play-button {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE TWEAKS
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .container {
+    padding: var(--space-4);
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+  }
+
+  .card-header {
+    padding: var(--space-4) var(--space-4) 0;
+  }
+
+  .card-content {
+    padding: var(--space-4);
+  }
+
+  .metrics-card {
+    padding: var(--space-4);
+  }
+}

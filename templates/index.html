@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamViz</title>
+  <meta name="description" content="An educational dashboard to demonstrate how real-time video streaming platforms work.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- ==================== MAIN CARD ==================== -->
+    <div class="card">
+      <div class="card-header">
+        <h1 class="card-title">Streaming Video Dashboard</h1>
+        <p class="card-description">Play samples or paste your own MP4 URL!</p>
+      </div>
+
+      <div class="card-content">
+
+        <!-- ==================== TABS ==================== -->
+        <div class="tabs-root">
+          <div class="tabs-list">
+            <button class="tabs-trigger active" data-tab="samples" onclick="switchTab('samples')">Samples</button>
+            <button class="tabs-trigger" data-tab="custom" onclick="switchTab('custom')">Custom URL</button>
+          </div>
+
+          <!-- Samples tab -->
+          <div class="tabs-content active" id="tab-samples">
+            <div class="select-wrapper">
+              <select id="videoSelect" class="select-trigger" onchange="onSampleChange()">
+                {% for v in videos %}
+                <option value="{{ loop.index0 }}">{{ v.title }}</option>
+                {% endfor %}
+              </select>
+              <span class="select-chevron">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- Custom URL tab -->
+          <div class="tabs-content" id="tab-custom">
+            <input
+              type="text"
+              id="customUrl"
+              class="input"
+              placeholder="Paste MP4 URL here (e.g. https://commondatastorage.../BigBuckBunny.mp4)"
+            >
+          </div>
+        </div>
+
+        <!-- ==================== PLAY AREA ==================== -->
+        <div class="play-area">
+          <button id="playBtn" class="play-button" onclick="playVideo()">
+            <span class="play-button-icon">▶️</span>
+            <span id="playBtnText">Play Video</span>
+          </button>
+
+          <video
+            id="player"
+            controls
+            class="video-player"
+            preload="metadata"
+          ></video>
+
+          <!-- ==================== LIVE METRICS ==================== -->
+          <div class="metrics-card">
+            <h3 class="metrics-title">
+              <span class="metrics-icon">📊</span>
+              Live Metrics
+            </h3>
+            <div class="metrics-grid">
+              <div class="metric-item">
+                <div class="metric-label">Current Time</div>
+                <div class="metric-value metric-blue" id="metricTime">0.0s</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-label">Duration</div>
+                <div class="metric-value" id="metricDuration">0.0s</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-label">Buffer Ranges</div>
+                <div class="metric-value" id="metricRanges">0</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-label">Buffered</div>
+                <div class="metric-value metric-green" id="metricBuffered">0%</div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.play-area -->
+
+      </div><!-- /.card-content -->
+    </div><!-- /.card -->
+
+  </div><!-- /.container -->
+
+  <!-- Video data injected from Flask -->
+  <script>
+    window.__SAMPLE_VIDEOS__ = {{ videos | tojson | safe }};
+  </script>
+  <script src="/static/app.js"></script>
+
+</body>
+</html>
