@@ -104,7 +104,7 @@
 
   <!-- Video data injected from Flask -->
   <script>
-    window.__SAMPLE_VIDEOS__ = {{ videos | tojson | safe }};
+    window.__SAMPLE_VIDEOS__ = JSON.parse('{{ videos | tojson | safe }}');
   </script>
   <script src="/static/app.js"></script>
 
