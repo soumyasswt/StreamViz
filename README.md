@@ -1,5 +1,6 @@
 # StreamViz
 
+
 An educational dashboard to demonstrate how real-time video streaming platforms work.
 
 ## Tech Stack
